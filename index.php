@@ -6,12 +6,16 @@ if(isset($_GET['page'])) {
   $page = 'home';
 }
 
+if ($_SESSION['user'] != '')
+  $page = 'mainpage';
+
 ob_start();
-require ('views/template/template.php');
+include ('views/template/template.php');
 if ($page === 'home') {
-  require 'views/home.php';
-} else {
-  require 'views/home.php';
+  include 'views/view_login.php';
+  include 'views/view_createaccount.php';
+} else if ($page === 'mainpage'){
+  include 'views/view_mainpage.php';
 }
 $content = ob_get_contents();
 
