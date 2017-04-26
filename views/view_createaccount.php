@@ -1,5 +1,10 @@
-<script type="text/javascript" src="views/scripts/createUser.js"></script>
-    <div>
+<?php session_start();?>
+    <div style="margin: 0 3vw">
+      <?
+        require ('message.php');
+      ?>
+    </div>
+    <div style="margin: 0 3vw">
     </br><h2>Créer son compte</h2></br>
           <form method="post" action="Controllers/createUser.php" onSubmit="return verifForm(this)">
               <p style='width: 300px'>*Login : Entre 4 et 25 Charactères<input style="width: 500px; height: 25px" type="text" size="80" name="login" onblur="verifPseudo(this)" value=""/></p>

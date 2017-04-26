@@ -1,12 +1,14 @@
 <?php
+session_start();
 require '../Classes/Connection.php';
+header('Location: ../index.php?page=home');
 if ($_POST['login'] && $_POST['passwd1'] && $_POST['submit'] == "OK" && $_POST['nom'] && $_POST['prenom'] && $_POST['mail']) {
     $link = new Connection();
     $login = $_POST['login'];
     $query = $link->db->prepare("SELECT * FROM t_users WHERE login = :login");
     $query->execute(array('login' => $_POST['login']));
     if ($query->fetch()) {
-        echo "<div><p style='color: red'>Ce login est déja utilisé</p>";
+        $_SESSION['error'] = 'alreadyused';
     }
     else {
       $passwd = hash('whirlpool', $_POST['passwd1']);
@@ -18,14 +20,7 @@ if ($_POST['login'] && $_POST['passwd1'] && $_POST['submit'] == "OK" && $_POST['
       $query->execute(array('login' => $login, 'key' => $key));
       require '../views/template/message_validation.php';
       mail($_POST['mail'], $subject, $message, $heading);
-      echo "mail = " . $_POST['mail'] . '</br>';
-      echo "key = " .$key . '</br>';
-      echo "message = " . $message ."</br>";
-      echo "subject = " . $subject . "</br>";
-      echo "heading = " . $heading . "</br>";
-      echo "<div><p style='color: red'>Votre compte a bien été créé</p></br>";
-      echo "<p>Un email de confirmation vous à été envoyé<p>";
+      $_SESSION['message'] = 'createdaccount';
     }
-    echo '<a href="../index.php?page=home">Retour à l\'accueuil</a></div>';
 }
 ?>

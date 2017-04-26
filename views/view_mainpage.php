@@ -1,2 +1,2 @@
-<div class="mainpage">This is the main page
+<div class="main_page">This is the main page
 </div>

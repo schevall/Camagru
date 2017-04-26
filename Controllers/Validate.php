@@ -19,7 +19,7 @@ else {
           $query->execute(array('login' => $login));
        }
      else
-        echo "Erreur ! Votre compte ne peut être activé. car la cle envoyée est différente de celle présente dans la base de données";
+        echo "Erreur ! Votre compte ne peut être activé car la cle envoyée est différente de celle présente dans la base de données";
   }
   echo '</br><a href="../index.php?page=home">Retour à l\'accueuil</a></div>';
 

@@ -6,7 +6,7 @@ prenom varchar(255) NOT NULL,
 mail varchar(255) NOT NULL,
 passwd varchar(255) NOT NULL,
 actif BOOLEAN DEFAULT 0,
-cle varchar(32) DEFAULT NULL,
+user_key varchar(32) DEFAULT NULL,
 date_user DATE NOT NULL);
 
 CREATE TABLE t_admin (

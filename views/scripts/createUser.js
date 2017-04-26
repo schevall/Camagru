@@ -90,7 +90,28 @@ function verifNom(nom, prenom) {
         return true;
      else
      {
-        alert("Veuillez remplir correctement tous les champs");
+        alert("Veuillez remplir correctement tous les champs pour vous inscrire");
         return false;
      }
   }
+
+function verif_modif_user(f) {
+    var passwdOK = verifPasswd(f.passwd1, f.passwd2);
+    if (f.oldpasswd.value === '')
+      passwdOK = false;
+    if(passwdOK)
+      return true;
+    else
+      return false;
+}
+
+function verif_login(f) {
+  if (f.login.value === '' || f.passwd.value === ''){
+    alert("Veuillez remplir correctement tous les champs pour vour connecter")
+    return false;
+  }
+  else {
+    return true;
+  }
+
+}

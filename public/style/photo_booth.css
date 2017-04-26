@@ -1,0 +1,40 @@
+.main_screen {
+  min-width: 550px;
+  display: flex;
+}
+
+.photo_booth {
+  width: 60%;
+  height: 40%;
+  margin-left: auto;
+  margin-right: auto;
+  flex-grow: 1;
+  display: flex;
+}
+
+.wrapper {
+  margin: auto;
+  display: inline;
+  width: 45%;
+}
+
+canvas {
+  min-width: 150px;
+  width: 80%;
+  background-color: grey;
+  flex-grow: 1;
+}
+
+video {
+  min-width: 150px;
+  width: 80%;
+  flex-grow: 1;
+}
+
+.sider {
+  margin: auto;
+  width: 35%;
+  height: 100%;
+  background-color: green;
+  flex-grow: 1;
+}

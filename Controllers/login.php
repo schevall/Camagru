@@ -1,21 +1,23 @@
 <?php
 session_start();
-require_once('Authenticate.php');
+require('Authenticate.php');
 if ($_POST['submit'] && $_POST['submit'] == 'OK' && $_POST['login'] && $_POST['passwd']) {
     $res = authenticate($_POST['login'], $_POST['passwd']);
     if ($res == 3) {
       $_SESSION['user'] = $_POST['login'];
-      echo "Connection réussie";
+      header('Location: ../index.php?page=mainpage');
     }
     elseif ($res == 2) {
-      echo "<p>Vous n'avez pas validé le lien du mail de confirmation</p>";
+      $_SESSION['error'] = 'notactivated';
+      header('Location: ../index.php?page=home');
     }
     elseif ($res == 1) {
-      echo "<p>Mauvaise Combinaison login/mot de passe</p>";
+      $_SESSION['error'] = 'notvalid';
+      header('Location: ../index.php?page=home');
     }
     else if($res == 0) {
-      echo "<p>Cet utilisateur n'existe pas</p>";
+      $_SESSION['error'] = 'notexist';
+      header('Location: ../index.php?page=home');
     }
-    echo '<a href="../index.php?page=home">Retour à l\'accueuil</a></div>';
 }
 ?>
