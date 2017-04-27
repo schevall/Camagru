@@ -35,6 +35,18 @@ video {
   margin: auto;
   width: 35%;
   height: 100%;
-  background-color: green;
+  border-style: dotted;
+  border-color: green;
   flex-grow: 1;
+}
+
+.side_photo {
+  width: 46%;
+  margin: 2%;
+  height: auto;
+}
+
+.delete_button {
+  width: 30px;
+  height: auto;
 }
