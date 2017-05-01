@@ -1,28 +1,31 @@
 <?php
 session_start();
-require($_SERVER["DOCUMENT_ROOT"].'/camagru/Controllers/getUserinfo.php');
+require('Controllers/GiveSessionUserInfo.php');
 ?>
 <div style="margin: 0 3vw">
   <h2>Votre compte</h2><br/>
-      <form class="modif_user" method="post" action="Controllers/modifUser.php" onSubmit="return verif_modif_user(this)">
+      <?
+        $_SESSION["user_info"] = GiveSessionUserInfo($_SESSION['user']);
+      ?>
         <p>
           <label>Login : </label>
-          <var><?=$_SESSION['userinfo']['login']?><br/>
+          <var><?=$_SESSION['user_info']['login']?><br/>
         </p>
         <p>
           <label>Prenom : </label>
-          <var><?=$_SESSION['userinfo']['prenom']?></var<br/>
+          <var><?=$_SESSION['user_info']['prenom']?></var<br/>
         </p>
         <p>
           <label>Nom : </label>
-          <var><?=$_SESSION['userinfo']['nom']?></var<br/>
+          <var><?=$_SESSION['user_info']['nom']?></var<br/>
         </p>
         <p>
           <label>Email : </label>
-          <var><?=$_SESSION['userinfo']['mail']?></var><br/>
+          <var><?=$_SESSION['user_info']['mail']?></var><br/>
         </p>
         <br/>
         <p>Pour changer votre mot de passe</p><br/>
+        <form class="modif_user" method="post" action="Controllers/modifUser.php" onSubmit="return verif_modif_user(this)">
         <p>
           <label style="width: 180px">Ancien mot de passe</label>
           <input type="password" size="80" name="oldpasswd" value=""/><br/>
@@ -41,6 +44,5 @@ require($_SERVER["DOCUMENT_ROOT"].'/camagru/Controllers/getUserinfo.php');
 <div>
   <?
     require('message.php');
-
   ?>
 </div>

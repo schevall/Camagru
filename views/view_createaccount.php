@@ -22,3 +22,4 @@
               <input style="width: 200px; height: 25px" type="submit" size="80" name="submit" value="OK">
           </form>
     </div>
+  <script type="text/javascript" src="views/scripts/createUser.js"></script>

@@ -23,6 +23,8 @@ if ($page === 'home') {
   include 'views/view_userprofile.php';
 } else if ($page === 'photo_booth'){
   include 'views/view_photo_booth.php';
+} else if ($page === 'photo_booth'){
+  include 'views/view_gallery.php';
 }
 $content = ob_get_contents();
 ob_end_flush();

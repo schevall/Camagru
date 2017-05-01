@@ -24,11 +24,5 @@ public $db;
     die('Erreur : ' . $e->getmessage());
     }
   }
-
-  public function AddPhoto($data, $user_login) {
-    $user_info = $this->getUserinfo($user_login);
-    $query = $this->db->prepare('INSERT INTO t_photos (id_user, data_photo, date_photo) VALUES (:id_user, :data_photo, :date_photo)');
-    $query->execute(array('id_user' => $user_info['id_user'], 'data_photo' => $data, 'date_photo' => date('Y-m-d-h-i-s')));
-  }
 }
 ?>

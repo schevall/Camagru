@@ -1,27 +1,32 @@
 <?php
-//creation de la db
 
 require('database.php');
 require('../Classes/Connection.php');
 
 $pdo = new PDO('mysql:host=localhost', $DB_USER, $DB_PASSWORD);
-
-$req = 'CREATE DATABASE IF NOT EXISTS db_camagru';
-$pdo->prepare($req)->execute();
-$req = 'USE DATABASE db_camagru';
-
-$link = new Connection($DB_DSN, $DB_USER, $DB_PASSWORD);
-
-$config = file_get_contents("native_db.sql");
-$query = explode (";", $config);
-$query = array_filter($query);
-foreach ($query as $key => $value) {
-	if (strlen($value) < 2) {
-		unset($query[$key]);
-	}
+$exist = False;
+$req = $pdo->prepare('SHOW DATABASES');
+$req->execute();
+while($res = $req->fetch()) {
+	if ($res['Database'] === 'db_camagru')
+		$exist = True;
 }
-foreach ($query as $elem) {
+if ($exist === false) {
+
+	$req = $pdo->prepare('CREATE DATABASE db_camagru');
+	$req->execute();
+	$pdo->query('USE DATABASE db_camgru');
+	$link = new Connection($DB_DSN, $DB_USER, $DB_PASSWORD);
+	$config = file_get_contents("native_db.sql");
+	$query = explode (";", $config);
+	unset($query[count($query) - 1]);
+	foreach ($query as $elem) {
 		$link->db->query($elem);
-};
+	};
+	echo "db_camgru has been created";
+}
+else {
+	echo "db_camgru allready exists";
+}
 
 ?>

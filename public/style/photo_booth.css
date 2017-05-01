@@ -1,50 +1,34 @@
 .main_screen {
-  min-width: 550px;
-  display: flex;
-}
-
-.photo_booth {
-  width: 60%;
-  height: 40%;
-  margin-left: auto;
-  margin-right: auto;
-  flex-grow: 1;
+  min-width: 320px;
   display: flex;
 }
 
 .wrapper {
-  margin: auto;
-  display: inline;
-  width: 45%;
+  width: 35%;
+  height: 100%;
+  flex-grow: 1;
+}
+
+.container {
+  width: 15%;
+  height: 100%;
 }
 
 canvas {
   min-width: 150px;
-  width: 80%;
   background-color: grey;
-  flex-grow: 1;
 }
 
 video {
   min-width: 150px;
-  width: 80%;
-  flex-grow: 1;
 }
 
-.sider {
-  margin: auto;
+#gallery {
   width: 35%;
   height: 100%;
-  border-style: dotted;
-  border-color: green;
   flex-grow: 1;
 }
 
-.side_photo {
-  width: 46%;
-  margin: 2%;
-  height: auto;
-}
 
 .delete_button {
   width: 30px;
