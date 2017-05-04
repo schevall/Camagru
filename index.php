@@ -1,7 +1,6 @@
 <?php
 session_start();
-define('ROOT', $_SERVER['DOCUMENT_ROOT']."/Camagru");
-if(isset($_GET['page'])) {
+if(isset($_GET['page']) && isset($_SESSION['user'])) {
   $page = $_GET['page'];
 } else {
   $page = 'home';
@@ -23,7 +22,7 @@ if ($page === 'home') {
   include 'views/view_userprofile.php';
 } else if ($page === 'photo_booth'){
   include 'views/view_photo_booth.php';
-} else if ($page === 'photo_booth'){
+} else if ($page === 'gallery'){
   include 'views/view_gallery.php';
 }
 $content = ob_get_contents();

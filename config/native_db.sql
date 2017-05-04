@@ -1,12 +1,13 @@
 CREATE TABLE t_users (
 id_user INT PRIMARY KEY AUTO_INCREMENT,
-login varchar(255) NOT NULL,
+login varchar(255) CHARACTER SET latin1 COLLATE latin1_general_cs NOT NULL,
 nom varchar(255) NOT NULL,
 prenom varchar(255) NOT NULL,
 mail varchar(255) NOT NULL,
 passwd varchar(255) NOT NULL,
 actif BOOLEAN DEFAULT 0,
 user_key varchar(32) DEFAULT NULL,
+user_key_rinit varchar(32) DEFAULT NULL,
 date_user DATE NOT NULL);
 
 CREATE TABLE t_admin (
@@ -20,9 +21,9 @@ CREATE TABLE t_admin (
 
 CREATE TABLE t_comments (
   id_comment INT PRIMARY KEY AUTO_INCREMENT,
-  id_user INT NOT NULL,
-  id_photo INT NOT NULL,
-  date_comment DATE NOT NULL,
+  id_user_from INT NOT NULL,
+  id_photo_to INT NOT NULL,
+  date_comment DATETIME NOT NULL,
   comment_content varchar(255) NOT NULL);
 
 CREATE TABLE t_photos (
@@ -32,7 +33,6 @@ CREATE TABLE t_photos (
 
 CREATE TABLE t_likes (
   id_like INT PRIMARY KEY AUTO_INCREMENT,
-  id_photo INT NOT NULL,
+  id_photo_to INT NOT NULL,
   id_user_from INT NOT NULL,
-  id_user_to INT NOT NULL,
   date_like DATE NOT NULL);

@@ -1,6 +1,6 @@
 <?php
 
-require 'Connection.php';
+require_once 'Connection.php';
 
 Class User extends Connection {
 
@@ -116,6 +116,30 @@ Class User extends Connection {
         }
       }
       return $verif;
+    }
+
+    public function SendReinitMail($login, $mail) {
+      $key = md5(microtime(TRUE)*100000);
+      $query = $this->db->prepare("UPDATE t_users SET user_key_rinit=:key WHERE login =:login");
+      $query->execute(array('login' => $login, 'key' => $key));
+      require '../views/template/message_reinitpasswd.php';
+      mail($mail, $subject, $message, $heading);
+    }
+
+    public function ValidateUserrinit($login, $key, $newpasswd) {
+      $query = $this->db->prepare("SELECT user_key_rinit FROM t_users WHERE login = :login");
+      $query->execute(array('login' => $login));
+      if ($res = $query->fetch()) {
+        $keybdd = $res['user_key_rinit'];
+      }
+      if ($key == $keybdd) {
+        $query = $this->db->prepare("UPDATE t_users SET passwd = :newpasswd WHERE login like :login ");
+        $newpasswdhashed = hash('whirlpool', $newpasswd);
+        $query->execute(array('newpasswd' => $newpasswdhashed, 'login' => $login));
+        return "Votre votre mot de passe a bien été réinitialisé !</br>Le voici : ".$newpasswd."";
+      }
+      else
+        return "Erreur ! Votre mot de passe ne peut être réinitialiser car la cle envoyée est différente de celle présente dans la base de données";
     }
 }
 ?>

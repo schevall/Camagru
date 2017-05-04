@@ -1,0 +1,10 @@
+.gallery {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.img_container {
+  width: 15%;
+  min-width: 60px;
+  margin: 1% 1%;
+}

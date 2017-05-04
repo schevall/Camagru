@@ -14,7 +14,40 @@ public $db;
     }
   }
 
-  public function getUserinfo($login) {
+  public function getUserinfobyLogin($login) {
+    try {
+      $query = $this->db->prepare('SELECT login, id_user FROM t_users WHERE login =:login');
+      $query->execute(array('login' => $login));
+      return $query->fetch(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e) {
+    die('Erreur : ' . $e->getmessage());
+    }
+  }
+
+  public function getUserinfobyId($id_user) {
+    try {
+      $query = $this->db->prepare('SELECT login, id_user FROM t_users WHERE id_user =:id_user');
+      $query->execute(array('id_user' => $id_user));
+      return $query->fetch(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e) {
+    die('Erreur : ' . $e->getmessage());
+    }
+  }
+
+  public function getUserinfobymail($mail_user) {
+    try {
+      $query = $this->db->prepare('SELECT login, id_user FROM t_users WHERE mail =:mail_user');
+      $query->execute(array('mail_user' => $mail_user));
+      return $query->fetch(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e) {
+    die('Erreur : ' . $e->getmessage());
+    }
+  }
+
+  public function getUserAllInfo($login) {
     try {
       $query = $this->db->prepare('SELECT * FROM t_users WHERE login =:login');
       $query->execute(array('login' => $login));
@@ -24,5 +57,17 @@ public $db;
     die('Erreur : ' . $e->getmessage());
     }
   }
+
+  public function getUserinfobyIdPhoto($id_photo) {
+    try {
+      $query = $this->db->prepare('SELECT id_user FROM t_photos WHERE id_photo =:id_photo');
+      $query->execute(array('id_photo' => $id_photo));
+      return $query->fetch(PDO::FETCH_ASSOC);
+    }
+    catch (PDOException $e) {
+    die('Erreur : ' . $e->getmessage());
+    }
+  }
+
 }
 ?>

@@ -86,7 +86,7 @@ function verifNom(nom, prenom) {
      var passwdOK = verifPasswd(f.passwd1, f.passwd2);
      var nomOK = verifNom(f.nom, f.prenom);
 
-     if(pseudoOk && mailOk && passwdOK && nomOk)
+     if(pseudoOk && mailOk && passwdOK && nomOK)
         return true;
      else
      {

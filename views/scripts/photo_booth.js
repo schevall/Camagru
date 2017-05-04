@@ -1,17 +1,18 @@
 (function() {
 // Pour la video
-var streaming = false,
-    video        = document.querySelector('#video'),
-    canvas       = document.querySelector('#canvas'),
-    fileUploaded = document.querySelector('#fileUploaded'),
-    uploadbutton   = document.querySelector('#uploadbutton'),
+var streaming     = false,
+    init          = 0,
+    video         = document.querySelector('#video'),
+    canvas        = document.querySelector('#canvas'),
+    file_Upload  = document.querySelector('#file_Upload'),
+    upload_button  = document.querySelector('#upload_button'),
     gallery       = document.querySelector('#gallery'),
-    take_pic  = document.querySelector('#take_pic'),
+    take_pic      = document.querySelector('#take_pic'),
     delete_button = document.querySelectorAll('.delete_button'),
-    filter      = document.querySelector('#filter-selector'),
-	  save_pic  = document.querySelector('#save_pic'),
-    width = 320,
-    height = 0;
+    filter        = document.querySelector('#filter-selector'),
+	  save_pic      = document.querySelector('#save_pic'),
+    width         = 320,
+    height        = 0;
 
 navigator.getMedia = ( navigator.getUserMedia ||
                        navigator.webkitGetUserMedia ||
@@ -52,7 +53,6 @@ video.addEventListener('canplay', function(ev){
 
 function DeletePhoto(event){
   const Container = event.currentTarget.parentNode;
-
   const currentPhoto = Container.firstElementChild;
   const id = currentPhoto.getAttribute("id");
 
@@ -91,7 +91,7 @@ function Add_ajax(data) {
      var httpRequest = new XMLHttpRequest();
      httpRequest.open('POST', 'Controllers/ajax.php', true);
      httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-     var params = "action=save&data=" + data;
+     var params = "action=save&data=" + data + "&filter=" + filter.value;
      httpRequest.onreadystatechange = function () {
        if (this.readyState == 4 && this.status == 200) {
          var MyJson = httpRequest.responseText;
@@ -104,6 +104,10 @@ function Add_ajax(data) {
 
 save_pic.addEventListener('click', function(event) {
   event.preventDefault();
+  if (init == 0) {
+    alert("Prendre une photo thx =0");
+    return ;
+  }
   const data = canvas.toDataURL('image/png').split(',')[1];
 	Add_ajax(data);
 }, false);
@@ -116,6 +120,7 @@ function takepicture() {
 
 take_pic.addEventListener('click', function(event) {
   event.preventDefault();
+  init = 1;
   takepicture();
   const data = canvas.toDataURL('image.png').split(',')[1];
 }, false);
@@ -132,6 +137,53 @@ function Delete_ajax(id) {
   };
   httpRequest.send(params);
 }
+
+function Add_ajax(data) {
+     var httpRequest = new XMLHttpRequest();
+     httpRequest.open('POST', 'Controllers/ajax.php', true);
+     httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+     var params = "action=save&data=" + data + "&filter=" + filter.value;
+     httpRequest.onreadystatechange = function () {
+       if (this.readyState == 4 && this.status == 200) {
+         var MyJson = httpRequest.responseText;
+         var MyObj = JSON.parse(MyJson);
+         AddPhoto(MyObj.id, MyObj.src);
+       }
+     };
+     httpRequest.send(params);
+}
+
+
+function handleImage(event){
+    if (file_Upload.files && file_Upload.files[0]) {
+      const reader = new FileReader();
+      reader.onload = function(event){
+        const verif = reader.result;
+        const fileinfo = verif.split(',')[0];
+        const filetype = fileinfo.split(';')[0];
+        const fileencode = fileinfo.split(';')[1];
+        if (filetype != 'data:image/png' || fileencode != 'base64') {
+          alert ('Mauvais type de fichier : ' + filetype);
+          return ;
+        }
+        const img = new Image();
+        img.onload = function(){
+          init = 1;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+      }
+        img.src = event.target.result;
+    }
+    reader.readAsDataURL(file_Upload.files[0]);
+  }
+  else
+    alert("Mettre un fichier thx =0");
+}
+
+  upload_button.addEventListener('click', function(event) {
+      handleImage(event);
+      event.preventDefault();
+    }, false);
 
 
 })();
