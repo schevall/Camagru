@@ -49,8 +49,6 @@ video.addEventListener('canplay', function(ev){
   }
 }, false);
 
-// Pour enregistrer les photos
-
 function DeletePhoto(event){
   const Container = event.currentTarget.parentNode;
   const currentPhoto = Container.firstElementChild;
@@ -91,7 +89,7 @@ function Add_ajax(data) {
      var httpRequest = new XMLHttpRequest();
      httpRequest.open('POST', 'Controllers/ajax.php', true);
      httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-     var params = "action=save&data=" + data + "&filter=" + filter.value;
+     var params = "action=save&data=" + data;
      httpRequest.onreadystatechange = function () {
        if (this.readyState == 4 && this.status == 200) {
          var MyJson = httpRequest.responseText;
@@ -112,17 +110,32 @@ save_pic.addEventListener('click', function(event) {
 	Add_ajax(data);
 }, false);
 
-function takepicture() {
-  canvas.width = width;
-  canvas.height = height;
-  canvas.getContext('2d').drawImage(video, 0, 0, width, height);
+
+function Fusion_ajax(data) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.open('POST', 'Controllers/ajax.php', true);
+  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  var params = "action=put_filter&data=" + data + "&filter=" + filter.value;
+  httpRequest.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      var MyJson = httpRequest.responseText;
+      var MyObj = JSON.parse(MyJson);
+      const newPhoto = document.createElement('img');
+      newPhoto.setAttribute('src', MyObj.src);
+      canvas.getContext('2d').drawImage(newPhoto, 0, 0, width, height);
+    }
+  };
+  httpRequest.send(params);
 }
 
 take_pic.addEventListener('click', function(event) {
   event.preventDefault();
   init = 1;
-  takepicture();
+  canvas.width = width;
+  canvas.height = height;
+  canvas.getContext('2d').drawImage(video, 0, 0, width, height);
   const data = canvas.toDataURL('image.png').split(',')[1];
+  Fusion_ajax(data);
 }, false);
 
 function Delete_ajax(id) {

@@ -17,8 +17,7 @@ Class Photo extends Connection{
       return $this->id_photo;
     }
 
-    public function getEncodedData() {
-      $path = '../database/'.$this->login.'/'.$this->id_photo.'.png';
+    public function getEncodedData($path) {
       if (!file_exists($path))
         return -1;
       $data = file_get_contents($path);
@@ -39,6 +38,14 @@ Class Photo extends Connection{
       }
       $query->execute(array('id_user' => $id_user));
       return $query->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    public function CountAllPhoto($login = null) {
+      if ($login == null) {
+        $query = $this->db->prepare("SELECT COUNT(id_photo) AS 'count' FROM t_photos");
+        $query->execute();
+        return $query->fetch();
+      }
     }
 
     public function GetImgData($id_photo, $login) {
@@ -69,6 +76,15 @@ Class Photo extends Connection{
       $img .= '<img id='.$info['id_photo'].' class="gallery_photo" alt="photo"';
       $img .= 'src="data:image/png;base64,'.$data.'">';
       return $img;
+    }
+
+    public function paginatePhoto($AllPhoto, $p) {
+      foreach ($AllPhoto as $key => $value) {
+        if ((($key)) < ($p * 10)) {
+          $Output[] = $value;
+        }
+      }
+      return $Output;
     }
 
 }

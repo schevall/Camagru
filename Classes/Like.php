@@ -31,5 +31,9 @@ Class Like extends Connection {
     $res = $query->fetch();
     return ($res);
   }
+
+  
 }
+
+
 ?>

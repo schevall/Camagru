@@ -7,120 +7,94 @@ function verifComm(f) {
   }
 }
 
-var like_button = document.querySelectorAll('.like_button'),
+let like_button = document.querySelectorAll('.like_button'),
     unlike_button = document.querySelectorAll('.unlike_button'),
+    img_container = document.querySelectorAll('.img_container'),
+    Nb_of_like = document.querySelectorAll('.nb_like'),
     undeflike_button = document.querySelectorAll('.undeflike_button');
 
 
-function Is_allready_Liked_ajax(id, Target) {
-  var httpRequest = new XMLHttpRequest();
+function Is_allready_Liked_ajax(id, Button) {
+  let httpRequest = new XMLHttpRequest();
   httpRequest.open("POST", 'Controllers/ajax.php', true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  const params = "action=Is_allready_Liked&id=" + id;
+  let params = "action=Is_allready_Liked&id=" + id;
   httpRequest.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(httpRequest.responseText);
       if (httpRequest.responseText == 'allreadyliked') {
-        Target.addEventListener('click', function(event) {
-          event.preventDefault();
-          UnLike(event);
-        });
-        Target.setAttribute('class', 'unlike_button');
-        Target.innerHTML = "Unlike";
+        Button.setAttribute('class', 'unlike_button');
+        Button.innerHTML = "Unlike";
       } else if (httpRequest.responseText == 'notlikedyet') {
-        Target.addEventListener('click', function(event) {
-          event.preventDefault();
-          Like(event);
-        });
-        Target.setAttribute('class', 'like_button');
-        Target.innerHTML = "like";
+        Button.setAttribute('class', 'like_button');
+        Button.innerHTML = "like";
       }
+      Attribute_events(Button);
     }
   };
   httpRequest.send(params);
 }
 
-for (var i = 0; i < undeflike_button.length; i++) {
-  var Target = undeflike_button[i];
-  const Container = Target.parentNode;
-  const currentPhoto = Container.firstElementChild;
-  const id = currentPhoto.getAttribute("id");
-  Is_allready_Liked_ajax(id, Target);
-}
+window.addEventListener("load", function(event) {
+  for (let i = 0; i < img_container.length; i++) {
+    let Container = img_container[i];
+    let id = Container.querySelector(".gallery_photo").getAttribute("id");
+    let Target = Container.querySelector(".nb_like");
+    Number_of_like(id, Target);
+  }
+  for (let i = 0; i < undeflike_button.length; i++) {
+    let Button = undeflike_button[i];
+    let Container = Button.parentNode;
+    let id = Container.querySelector(".gallery_photo").getAttribute("id");
+    let Target = Container.querySelector(".nb_like");
+    Is_allready_Liked_ajax(id, Button);
+  }
+});
 
-
-function Like(event){
-  var Target = event.currentTarget;
-  Target.setAttribute('class', 'unlike_button');
-  Target.innerHTML = "Unlike";
-  Target.removeEventListener('click', function(event) {
-    event.preventDefault();
-    Like(event);
-  });
-  Target.addEventListener('click', function(event) {
-      event.preventDefault();
-      UnLike(event);
-  });
-  const Container = Target.parentNode;
-  const currentPhoto = Container.firstElementChild;
-  const id = currentPhoto.getAttribute("id");
-  NewLike_ajax(id);
-}
-
-function NewLike_ajax(id) {
-  var httpRequest = new XMLHttpRequest();
-  httpRequest.open("POST", 'Controllers/ajax.php', true);
-  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  const params = "action=newlike&id=" + id;
-  httpRequest.onreadystatechange = function() {
-    if (this.readyState == 4 && this.status == 200) {
-      console.log("Photo liked Response :\n" + httpRequest.responseText + "\n");
-    }
-  };
-  httpRequest.send(params);
-}
-
-function UnLike(event){
-  var Target = event.currentTarget;
-  Target.setAttribute('class', 'like_button');
-  Target.innerHTML = "Like";
-  Target.removeEventListener('click', function(event) {
-    event.preventDefault();
-    UnLike(event);
-  });
-  Target.addEventListener('click', function(event) {
+function Attribute_events(Button) {
+  Button.addEventListener('click', function(event) {
       event.preventDefault();
       Like(event);
-  });
-  const Container = Target.parentNode;
-  const currentPhoto = Container.firstElementChild;
-  const id = currentPhoto.getAttribute("id");
-  DeleteLike_ajax(id);
+  },false);
 }
 
-function DeleteLike_ajax(id) {
-  var httpRequest = new XMLHttpRequest();
+
+function Like(event) {
+  let Container = event.currentTarget.parentNode;
+  let Button = Container.querySelector('.like_button');
+  let UnButton = Container.querySelector('.unlike_button');
+  let id = Container.firstElementChild.getAttribute("id");
+  Like_ajax(id, Container, Button, UnButton);
+}
+
+function Like_ajax(id, Container, Button, UnButton) {
+  let httpRequest = new XMLHttpRequest();
   httpRequest.open("POST", 'Controllers/ajax.php', true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  const params = "action=deletelike&id=" + id;
+  let params = "action=newlike&id=" + id;
   httpRequest.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      console.log("Photo Unliked Response :\n" + httpRequest.responseText + "\n");
+      if (httpRequest.responseText == "more") {
+          Button.setAttribute('class', 'unlike_button');
+          Button.innerHTML = "Unlike";
+      } else if (httpRequest.responseText == "less") {
+        UnButton.setAttribute('class', 'like_button');
+        UnButton.innerHTML = "like";
+      }
+      Number_of_like(id, Container.querySelector('.nb_like'));
     }
   };
   httpRequest.send(params);
 }
 
-// for (var i = 0; i < like_button.length; i++) {
-//       like_button[i].addEventListener('click', function(event) {
-//         event.preventDefault();
-//         Like(event);
-//     })
-// }
-//
-// for (var i = 0; i < unlike_button.length; i++) {
-//       unlike_button[i].addEventListener('click', function(event) {
-//         event.preventDefault();
-//         UnLike(event);
-//     })
-// }
+function Number_of_like(id, Target) {
+  let httpRequest = new XMLHttpRequest()
+  httpRequest.open("POST", 'Controllers/ajax.php', true);
+  httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+  let params = "action=Nb_of_like&id=" + id;
+  httpRequest.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      Target.innerHTML = "Photo liké " + httpRequest.responseText + " fois";
+    }
+  };
+  httpRequest.send(params);
+}
