@@ -1,7 +1,7 @@
 <?php
 session_start();
 require_once '../Classes/Comment.php';
-header('Location: ../index.php?page=mainpage');
+header('Location: ../index.php?page=mainpage&p='.$_POST['page']);
 if ($_POST['comment_content'] == "")
   return;
 $comment = $_POST['comment_content'];

@@ -1,36 +1,60 @@
 .main_screen {
-  min-width: 320px;
+  min-width: 750px;
   display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
 }
 
-.wrapper {
-  width: 35%;
-  height: 100%;
+.photo_booth_container {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  width: 360px;
   flex-grow: 1;
 }
 
-.container {
-  width: 15%;
-  height: 100%;
+.filter_container {
+  width: 250px;
+  min-width: 150px;
+  max-width: 250px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin: auto;
+  margin-top: 30px;
+}
+
+.img-container {
+  width: 360px;
+  padding: 3%;
+  margin-top: 2%;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: white;
+  align-items: center;
+  border-style: groove;
+  position: relative;
 }
 
 canvas {
-  min-width: 150px;
-  background-color: grey;
-}
-
-video {
-  min-width: 150px;
+  border-style: groove;
 }
 
 #gallery {
-  width: 35%;
-  height: 100%;
+  width: 400px;
+  min-width: 460px;
+  min-height: 280px;
+  margin: auto;
   flex-grow: 1;
 }
 
 
 .delete_button {
+  position: absolute;
+  right : 5%;
+  bottom: 5%;
   width: 30px;
   height: auto;
+}
+
+#take_pic {
+  margin-left: 5%;
 }

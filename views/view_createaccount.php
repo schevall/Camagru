@@ -1,8 +1,4 @@
 <?php session_start();?>
-    <div style="margin: 0 3vw">
-      <?
-        require ('message.php');
-      ?>
     </div>
     <div style="margin: 0 3vw">
     </br><h2>Créer son compte</h2></br>

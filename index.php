@@ -2,6 +2,8 @@
 session_start();
 if(isset($_GET['page']) && isset($_SESSION['user'])) {
   $page = $_GET['page'];
+} else if ($_GET['page'] == 'mainpage'){
+  $page = 'mainpage';
 } else {
   $page = 'home';
 }

@@ -4,27 +4,41 @@ require_once 'Connection.php';
 
 Class User extends Connection {
 
+
+
     public function Create($array) {
-      $passwd = hash('whirlpool', $array['passwd1']);
-      $query = $this->db->prepare("INSERT INTO t_users (login, nom, prenom, mail, passwd, date_user) VALUES (:login, :nom, :prenom, :mail, :passwd, :date_user)");
-      $query->execute(array('login' => $array['login'], 'nom' => $array['nom'], 'prenom' => $array['prenom'], 'mail' => $array['mail'], 'passwd' => $passwd, 'date_user' => date('Y-m-d')));
+      try {
+        $passwd = hash('whirlpool', $array['passwd1']);
+        $query = $this->db->prepare("INSERT INTO t_users (login, nom, prenom, mail, passwd, date_user) VALUES (:login, :nom, :prenom, :mail, :passwd, :date_user)");
+        $query->execute(array('login' => htmlentities($array['login']), 'nom' => htmlentities($array['nom']), 'prenom' => htmlentities($array['prenom']), 'mail' => htmlentities($array['mail']), 'passwd' => $passwd, 'date_user' => date('Y-m-d')));
+      } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+      }
     }
 
     public function Exists ($login) {
-      $query = $this->db->prepare("SELECT * FROM t_users WHERE login = :login");
-      $query->execute(array('login' => $login));
-      if ($query->fetch())
-        return True;
-      else
-        return False;
+      try {
+        $query = $this->db->prepare("SELECT * FROM t_users WHERE login = :login");
+        $query->execute(array('login' => $login));
+        if ($query->fetch())
+          return True;
+          else
+          return False;
+      } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+      }
     }
 
     public function SendActivationMail($mail, $login) {
-      $key = md5(microtime(TRUE)*100000);
-      $query = $this->db->prepare("UPDATE t_users SET user_key=:key WHERE login =:login");
-      $query->execute(array('login' => $login, 'key' => $key));
-      require '../views/template/message_validation.php';
-      mail($mail, $subject, $message, $heading);
+      try {
+        $key = md5(microtime(TRUE)*100000);
+        $query = $this->db->prepare("UPDATE t_users SET user_key=:key WHERE login =:login");
+        $query->execute(array('login' => $login, 'key' => $key));
+        require '../views/template/message_validation.php';
+        mail($mail, $subject, $message, $heading);
+      } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
+      }
     }
 
     static protected function VerifPasswd($passwd1, $passwd2) {
@@ -69,39 +83,47 @@ Class User extends Connection {
     }
 
     public function ValidateUser($login, $key) {
-      $query = $this->db->prepare("SELECT user_key, actif FROM t_users WHERE login = :login");
-      $query->execute(array('login' => $login));
-      if ($res = $query->fetch()) {
-        $keybdd = $res['user_key'];
-        $actif = $res['actif'];
-      }
-      if($actif == '1')
-        return "Votre compte est déjà actif !";
-      else if ($key == $keybdd) {
-        $query = $this->db->prepare("UPDATE t_users SET actif = 1 WHERE login like :login ");
+      try {
+        $query = $this->db->prepare("SELECT user_key, actif FROM t_users WHERE login = :login");
         $query->execute(array('login' => $login));
-        return "Votre compte a bien été activé !</br>Connectez vous pour accéder";
+        if ($res = $query->fetch()) {
+          $keybdd = $res['user_key'];
+          $actif = $res['actif'];
+        }
+        if($actif == '1')
+          return "Votre compte est déjà actif !";
+          else if ($key == $keybdd) {
+            $query = $this->db->prepare("UPDATE t_users SET actif = 1 WHERE login like :login ");
+            $query->execute(array('login' => $login));
+            return "Votre compte a bien été activé !</br>Connectez vous pour accéder";
+          }
+        else
+          return "Erreur ! Votre compte ne peut être activé car la cle envoyée est différente de celle présente dans la base de données";
+      } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
       }
-      else
-        return "Erreur ! Votre compte ne peut être activé car la cle envoyée est différente de celle présente dans la base de données";
     }
 
     public function Authenticate($login, $passwd) {
-      $query = $this->db->prepare('SELECT login, passwd, actif FROM t_users WHERE login = :login');
-      $query->execute(array('login' => $login));
-      if (($array = $query->fetch(PDO::FETCH_ASSOC))) {
-        $hashedpasswd = hash('whirlpool', $passwd);
-        if (!strcmp($array['passwd'], $hashedpasswd)) {
-          if ($array['actif'] == 1)
-            return NULL;
+      try {
+        $query = $this->db->prepare('SELECT login, passwd, actif FROM t_users WHERE login = :login');
+        $query->execute(array('login' => htmlentities($login)));
+        if (($array = $query->fetch(PDO::FETCH_ASSOC))) {
+          $hashedpasswd = hash('whirlpool', $passwd);
+          if (!strcmp($array['passwd'], $hashedpasswd)) {
+            if ($array['actif'] == 1)
+              return NULL;
+            else
+              return "votre compte n'est pas activé";
+            }
           else
-            return "votre compte n'est pas activé";
+            return "Le mot de passe n'est pas le bon";
         }
         else
-          return "Le mot de passe n'est pas le bon";
+          return "Ce compte n'existe pas";
+      } catch (PDOException $e) {
+        die('Erreur : ' . $e->getMessage());
       }
-      else
-        return "Ce compte n'existe pas";
     }
 
     public function ModifPasswdUser($login, $array) {
@@ -119,14 +141,19 @@ Class User extends Connection {
     }
 
     public function SendReinitMail($login, $mail) {
-      $key = md5(microtime(TRUE)*100000);
-      $query = $this->db->prepare("UPDATE t_users SET user_key_rinit=:key WHERE login =:login");
-      $query->execute(array('login' => $login, 'key' => $key));
-      require '../views/template/message_reinitpasswd.php';
-      mail($mail, $subject, $message, $heading);
+      try {
+        $key = md5(microtime(TRUE)*100000);
+        $query = $this->db->prepare("UPDATE t_users SET user_key_rinit=:key WHERE login =:login");
+        $query->execute(array('login' => $login, 'key' => $key));
+        require '../views/template/message_reinitpasswd.php';
+        mail($mail, $subject, $message, $heading);
+      } catch (PDOException $e) {
+      die('Erreur : ' . $e->getMessage());
+    }
     }
 
     public function ValidateUserrinit($login, $key, $newpasswd) {
+      try {
       $query = $this->db->prepare("SELECT user_key_rinit FROM t_users WHERE login = :login");
       $query->execute(array('login' => $login));
       if ($res = $query->fetch()) {
@@ -140,6 +167,9 @@ Class User extends Connection {
       }
       else
         return "Erreur ! Votre mot de passe ne peut être réinitialiser car la cle envoyée est différente de celle présente dans la base de données";
+      } catch (PDOException $e) {
+      die('Erreur : ' . $e->getMessage());
+    }
     }
 }
 ?>

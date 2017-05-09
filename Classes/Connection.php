@@ -68,6 +68,5 @@ public $db;
     die('Erreur : ' . $e->getmessage());
     }
   }
-
 }
 ?>

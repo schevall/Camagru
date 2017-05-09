@@ -23,10 +23,10 @@ if ($exist === false) {
 	foreach ($query as $elem) {
 		$link->db->query($elem);
 	};
-	echo "db_camgru has been created";
+	echo "db_camagru has been created";
 }
 else {
-	echo "db_camgru allready exists";
+	echo "db_camagru allready exists";
 }
 
 ?>

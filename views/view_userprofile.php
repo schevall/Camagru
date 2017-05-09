@@ -41,8 +41,5 @@ require('Controllers/GiveSessionUserInfo.php');
         <input style="margin-left: 400px; width: 40px; height: 25px" type="submit" size="80" name="submit" value="OK">
       </form>
 </div>
-<div>
-  <?
-    require('message.php');
-  ?>
-</div>
+
+<script type="text/javascript" src="views/scripts/createUser.js"></script>

@@ -1,5 +1,27 @@
+    var take_pic      = document.querySelector('#take_pic');
+    var filter        = document.querySelector('#filter-selector');
+    var selected_filter = 0;
+
+    if (filter.value == 'filter0') {
+          take_pic.innerHTML = 'Choisir un filtre';
+    }
+    else {
+          take_pic.innerHTML = 'Prendre une photo';
+    }
+
+    filter.addEventListener('change', function(ev) {
+      if (filter.value == 'filter0') {
+          selected_filter = 0;
+            take_pic.innerHTML = 'Choisir un filtre';
+      }
+      else {
+            selected_filter = 1;
+            take_pic.innerHTML = 'Prendre une photo';
+      }
+    }, false );
+
+
 (function() {
-// Pour la video
 var streaming     = false,
     init          = 0,
     video         = document.querySelector('#video'),
@@ -15,9 +37,10 @@ var streaming     = false,
     height        = 0;
 
 navigator.getMedia = ( navigator.getUserMedia ||
+                      //  navigator.mediaDevices.getUserMedia ||
                        navigator.webkitGetUserMedia ||
                        navigator.mozGetUserMedia ||
-                       navigator.msGetUserMedia);
+                       navigator.msGetUserMedia );
 
 navigator.getMedia(
   {
@@ -79,7 +102,8 @@ function AddPhoto(id_photo, data) {
   newDelete.appendChild(newiconDelete);
 
   const newContainer = document.createElement('div');
-  newContainer.setAttribute('class', 'img-container flex-item');
+  newContainer.setAttribute('class', 'img-container');
+  newContainer.setAttribute('width', canvas.width * 1.2);
   newContainer.appendChild(newPhoto);
   newContainer.appendChild(newDelete);
   gallery.insertBefore(newContainer, gallery.firstChild);
@@ -122,19 +146,26 @@ function Fusion_ajax(data) {
       var MyObj = JSON.parse(MyJson);
       const newPhoto = document.createElement('img');
       newPhoto.setAttribute('src', MyObj.src);
-      canvas.getContext('2d').drawImage(newPhoto, 0, 0, width, height);
+      newPhoto.onload = function() {
+        canvas.getContext('2d').drawImage(newPhoto, 0, 0, width, height);
+      }
     }
   };
   httpRequest.send(params);
 }
 
 take_pic.addEventListener('click', function(event) {
+  if (selected_filter == 0) {
+    alert("Veuillez sélectionner un filtre");
+    return ;
+  }
   event.preventDefault();
   init = 1;
-  canvas.width = width;
-  canvas.height = height;
-  canvas.getContext('2d').drawImage(video, 0, 0, width, height);
-  const data = canvas.toDataURL('image.png').split(',')[1];
+  const newcanvas = document.createElement('canvas');
+  newcanvas.width = width;
+  newcanvas.height = height;
+  newcanvas.getContext('2d').drawImage(video, 0, 0, width, height);
+  const data = newcanvas.toDataURL('image.png').split(',')[1];
   Fusion_ajax(data);
 }, false);
 

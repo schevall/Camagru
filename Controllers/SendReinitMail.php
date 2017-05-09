@@ -10,7 +10,7 @@ if ($_POST['email'] != '') {
     return ;
   }
   $user_info = $User->getUserAllInfo($_POST['login']);
-  if ($user_info == false) {
+  if ($user_info == null) {
     $_SESSION['error'] = "Ce login n'existe pas chez nous";
   } else if ($user_info['mail'] != $mail) {
     $_SESSION['error'] = "Cet email ne correspond pas au login";
@@ -21,5 +21,7 @@ if ($_POST['email'] != '') {
   return ;
 
 }
+else
+  $_SESSION['error'] = "Veuillez remplir tout les champs";
 
  ?>

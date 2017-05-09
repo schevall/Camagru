@@ -11,6 +11,7 @@ Class Comment extends Connection{
   public function AddComment($id_photo, $comment, $id_user_sender) {
     date_default_timezone_set('Europe/Paris');
 	  $date_c = date("Y-m-d H:i:s");
+    $comment = $encodeHtml($comment);
     $query = $this->db->prepare("INSERT INTO t_comments
                                 (id_user_from, id_photo_to, date_comment, comment_content)
                                 VALUES (:user, :photo, :date_c, :comment)");

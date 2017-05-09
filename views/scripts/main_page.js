@@ -9,7 +9,7 @@ function verifComm(f) {
 
 let like_button = document.querySelectorAll('.like_button'),
     unlike_button = document.querySelectorAll('.unlike_button'),
-    img_container = document.querySelectorAll('.img_container'),
+    img_container = document.querySelectorAll('.img_container_main'),
     Nb_of_like = document.querySelectorAll('.nb_like'),
     undeflike_button = document.querySelectorAll('.undeflike_button');
 
@@ -91,7 +91,7 @@ function Number_of_like(id, Target) {
   httpRequest.open("POST", 'Controllers/ajax.php', true);
   httpRequest.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
   let params = "action=Nb_of_like&id=" + id;
-  httpRequest.onreadystatechange = function() {
+   httpRequest.onreadystatechange= function() {
     if (this.readyState == 4 && this.status == 200) {
       Target.innerHTML = "Photo liké " + httpRequest.responseText + " fois";
     }

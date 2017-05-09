@@ -6,9 +6,10 @@ var delete_button = document.querySelectorAll('.delete_button'),
 
 function DeletePhoto(event){
   const Container = event.currentTarget.parentNode;
+  const wideContainer = Container.parentNode;
   const currentPhoto = Container.firstElementChild;
   const id = currentPhoto.getAttribute("id");
-  gallery.removeChild(Container);
+  gallery.removeChild(wideContainer);
   Delete_ajax(id);
 }
 

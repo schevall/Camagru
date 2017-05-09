@@ -4,7 +4,30 @@
 }
 
 .img_container {
-  width: 15%;
-  min-width: 60px;
-  margin: 1% 1%;
+  min-width: 360px;
+  width: 18%;
+  margin: auto;
+  margin-top: 8px;
+  background-color: white;
+  border-style: groove;
+  position: relative;
+}
+
+.delete_button {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.img_content {
+  padding: 4%;
+  position: relative;
+}
+
+.gallery_photo {
+  position: relative;
+}
+
+.Likage {
+  text-align: center;
 }
