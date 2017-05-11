@@ -11,7 +11,7 @@ $message = '
 <title></title>
 </head>
 <body>
-<p>Bienvenue sur Camagrrrrrruuuu,</p></br>
+<p>Bienvenue sur Camagru '.$login.',</p></br>
 <p>Pour activer votre compte, veuillez cliquer sur le lien ci dessous</p>
 <a href="http://localhost:8080/camagru/Controllers/Validate.php?login='.urlencode($login).'&key='.urlencode($key).'">Cliquez ici</a>
 <p>---------------</p>

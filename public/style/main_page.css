@@ -12,7 +12,7 @@
   margin-left: 4%;
 }
 .img_container_main {
-  min-width: 360px;
+  min-width: 425px;
   width: 18%;
   margin: auto;
   margin-top: 8px;
@@ -30,8 +30,12 @@
   margin: auto;
 }
 
-.comment_form {
-  width: 50%;
+.comment_content {
+  width: 60%;
+}
+
+.comment_display {
+
 }
 
 .like_button {
@@ -42,4 +46,10 @@
 .unlike_button {
   margin: auto;
   background-color: lightblue;
+}
+
+.comm_list {
+  width: 300px;
+  height: 50px;
+  overflow: auto;
 }

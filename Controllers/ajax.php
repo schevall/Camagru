@@ -3,6 +3,7 @@ session_start();
 require('../Classes/Photo.php');
 require('../Classes/Like.php');
 
+
 if (!isset($_POST['action']))
   exit('Aucune action');
 if ($_POST['action'] == 'save') {
@@ -81,4 +82,20 @@ if ($_POST['action'] == 'Nb_of_like') {
   $res = $Like->NbLike($_POST['id']);
   echo ($res['COUNT(id_photo_to)']);
 }
+
+if ($_POST['action'] == 'AddComment') {
+  require_once '../Classes/Comment.php';
+  if ($_POST['comment'] == '' || strlen($_POST['comment']) > 254) {
+    return;
+  }
+  $comment = $_POST['comment'];
+  $id_photo = $_POST['id_photo'];
+  $Comment = new Comment();
+  $user_info_sender = $Comment->getUserinfobyLogin($_SESSION['user']);
+  $comment = $Comment->AddComment($id_photo, $comment, $user_info_sender['id_user']);
+  chdir("../");
+  $Comment->CommentMail();
+  echo $comment;
+}
+
  ?>

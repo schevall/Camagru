@@ -33,7 +33,7 @@ var streaming     = false,
     delete_button = document.querySelectorAll('.delete_button'),
     filter        = document.querySelector('#filter-selector'),
 	  save_pic      = document.querySelector('#save_pic'),
-    width         = 320,
+    width         = 420,
     height        = 0;
 
 navigator.getMedia = ( navigator.getUserMedia ||
@@ -73,11 +73,13 @@ video.addEventListener('canplay', function(ev){
 }, false);
 
 function DeletePhoto(event){
+
   const Container = event.currentTarget.parentNode;
-  const currentPhoto = Container.firstElementChild;
+  const Wrapper = Container.parentNode;
+  const currentPhoto = Wrapper.firstElementChild;
   const id = currentPhoto.getAttribute("id");
 
-  gallery.removeChild(Container);
+  gallery.removeChild(Wrapper);
   Delete_ajax(id);
 }
 
@@ -101,12 +103,14 @@ function AddPhoto(id_photo, data) {
   }, false);
   newDelete.appendChild(newiconDelete);
 
+  const newwrapper = document.createElement('div');
+  newwrapper.setAttribute('class', 'img-wrapper');
   const newContainer = document.createElement('div');
   newContainer.setAttribute('class', 'img-container');
-  newContainer.setAttribute('width', canvas.width * 1.2);
   newContainer.appendChild(newPhoto);
   newContainer.appendChild(newDelete);
-  gallery.insertBefore(newContainer, gallery.firstChild);
+  newwrapper.appendChild(newContainer);
+  gallery.insertBefore(newwrapper, gallery.firstChild);
 }
 
 function Add_ajax(data) {
@@ -206,7 +210,7 @@ function handleImage(event){
         const fileinfo = verif.split(',')[0];
         const filetype = fileinfo.split(';')[0];
         const fileencode = fileinfo.split(';')[1];
-        if (filetype != 'data:image/png' || fileencode != 'base64') {
+        if ((filetype != 'data:image/png' && filetype != 'data:image/jpeg') || fileencode != 'base64') {
           alert ('Mauvais type de fichier : ' + filetype);
           return ;
         }
@@ -215,6 +219,8 @@ function handleImage(event){
           init = 1;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0, width, height);
+          const data = canvas.toDataURL('image.png').split(',')[1];
+          Fusion_ajax(data);
       }
         img.src = event.target.result;
     }
@@ -225,9 +231,16 @@ function handleImage(event){
 }
 
   upload_button.addEventListener('click', function(event) {
-      handleImage(event);
-      event.preventDefault();
+    if (selected_filter == 0) {
+      alert("Veuillez sélectionner un filtre");
+      return ;
+    }
+    init = 1;
+    event.preventDefault();
+    handleImage(event);
     }, false);
+
+
 
 
 })();

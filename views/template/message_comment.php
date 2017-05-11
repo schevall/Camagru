@@ -17,7 +17,6 @@ $message_txt .= "$comment\r\n";
 
 //=====Lecture et mise en forme de la pièce jointe.
 $filepath = "database/".$receiver."/".$id_photo.".png";
-echo $filepath;
 $fichier   = fopen($filepath, "r");
 $attachement = fread($fichier, filesize($filepath));
 $attachement = chunk_split(base64_encode($attachement));

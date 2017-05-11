@@ -11,7 +11,7 @@ Class Comment extends Connection{
   public function AddComment($id_photo, $comment, $id_user_sender) {
     date_default_timezone_set('Europe/Paris');
 	  $date_c = date("Y-m-d H:i:s");
-    $comment = $encodeHtml($comment);
+    $comment = htmlentities($comment);
     $query = $this->db->prepare("INSERT INTO t_comments
                                 (id_user_from, id_photo_to, date_comment, comment_content)
                                 VALUES (:user, :photo, :date_c, :comment)");
@@ -19,7 +19,7 @@ Class Comment extends Connection{
     $this->comment = $comment;
     $this->id_photo = $id_photo;
     $this->id_user_sender = $id_user_sender;
-
+    return $comment;
   }
 
   public function CommentMail() {
@@ -35,5 +35,15 @@ Class Comment extends Connection{
     $comment = $this->comment;
     require 'views/template/message_comment.php';
   }
+
+  public function GetComment($id_photo) {
+    try {
+      $query = $this->db->prepare("SELECT * FROM t_comments WHERE id_photo_to =:id ORDER BY id_comment DESC");
+      $query->execute(array("id" => $id_photo));
+      return ($query->fetchAll(PDO::FETCH_ASSOC));
+      } catch (PDOException $e) {
+      die('Erreur : ' . $e->getMessage());
+    }
+  }
 }
- ?>
+?>

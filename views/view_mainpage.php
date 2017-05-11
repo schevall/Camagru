@@ -1,9 +1,12 @@
 <?php
 session_start();
 require('Classes/Photo.php');
-require('Classes/Like.php');
+require('Classes/Comment.php');
+
+$Comment = new Comment();
+
+
 $Photo = new Photo();
-$Like = new Like();
 $AllPhoto = $Photo->GetAllPhoto();
 $Count_photo = $Photo->CountAllPhoto();
 $count = $Count_photo['count'];
@@ -34,20 +37,31 @@ else {
     foreach ($AllPhoto as $key => $entry) {
       $user_info = $Photo->getUserinfobyId($entry['id_user']);
       $img = $Photo->DisplayMain($entry, $user_info['login']);
-      echo $img;
+      if ($img != -1) {
+        echo $img;
       ?>
-      <div class="auteur"><p >Auteur: <? if ($_SESSION['user'] == $user_info['login']) { echo 'Vous même !';} else { echo $user_info['login'];}?></p></div>
+      <div class="auteur" value="<?=$_SESSION['user']?>"><p >Auteur: <? if ($_SESSION['user'] == $user_info['login']) { echo 'Vous même !';} else { echo $user_info['login'];}?></p><br/></div>
       <? if ($_SESSION['user'] != null && $_SESSION['user'] != $user_info['login']) {?>
-        <form method="post" action="Controllers/AddComment.php" onSubmit="return verifComm(this)">
-          <input style="display: none" name="page" value='<?=$p?>'/>
-          <input style="display: none" name="id_photo" value="<?=$entry['id_photo']?>"/>
-          <input class="comment_form" name="comment_content" type="text" value=""/>
-          <input class="submit_comment" name="submit_comment" type="submit" value="Envoyer"/></form>
+        <form>
+          <input class="comment_content" name="comment_content" type="text" value="" placeholder="Commenter..."/>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input  style="display:none" class="submit_comment" name="submit_comment" type="submit" value="Envoyer"/>&nbsp;&nbsp;&nbsp;&nbsp;
+          <input class="user_form" style="display:none" value="<?=$_SESSION['user']?>"/>
           <button class="undeflike_button" >UndefLike</button>
+        </form>
       <? } ?>
-      <div class="nb_like"><span > Photo Liké: fois</span></div>
+      <div class="nb_like"><span >likes: fois</span></div>
+      <? $allcomms = $Comment->GetComment($entry['id_photo']);
+      if ($allcomms != null) {
+        ?> <ul class="comm_list"> <?
+        foreach ($allcomms as $com) {
+          $user = $Comment->getUserinfobyId($com['id_user_from']);
+          ?>
+            <li class="comment_display"><?=$user['login']?> : <?=$com['comment_content']?></li>
+        <? } ?>
+      </ul>
+      <? } ?>
       </div>
-  <? }} ?>
+    <? }}} ?>
 </div>
 
 <script type="text/javascript" src="views/scripts/main_page.js"></script>

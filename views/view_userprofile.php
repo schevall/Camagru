@@ -1,27 +1,26 @@
 <?php
 session_start();
-require('Controllers/GiveSessionUserInfo.php');
+require 'Classes/User.php';
+$User = new User();
+$user_info = $User->getUserAllInfo($_SESSION['user']);
 ?>
 <div style="margin: 0 3vw">
   <h2>Votre compte</h2><br/>
-      <?
-        $_SESSION["user_info"] = GiveSessionUserInfo($_SESSION['user']);
-      ?>
         <p>
           <label>Login : </label>
-          <var><?=$_SESSION['user_info']['login']?><br/>
+          <var><?=$user_info['login']?><br/>
         </p>
         <p>
           <label>Prenom : </label>
-          <var><?=$_SESSION['user_info']['prenom']?></var<br/>
+          <var><?=$user_info['prenom']?></var<br/>
         </p>
         <p>
           <label>Nom : </label>
-          <var><?=$_SESSION['user_info']['nom']?></var<br/>
+          <var><?=$user_info['nom']?></var<br/>
         </p>
         <p>
           <label>Email : </label>
-          <var><?=$_SESSION['user_info']['mail']?></var><br/>
+          <var><?=$user_info['mail']?></var><br/>
         </p>
         <br/>
         <p>Pour changer votre mot de passe</p><br/>

@@ -2,35 +2,39 @@
   min-width: 750px;
   display: flex;
   flex-wrap: wrap;
-  flex-direction: row;
+  /*flex-direction: row;*/
 }
 
 .photo_booth_container {
-  padding-top: 20px;
-  padding-bottom: 20px;
-  width: 360px;
+  padding: 3.2%;
+  /*padding-top: 20px;*/
+  /*padding-bottom: 20px;*/
+  /*margin: auto;*/
+  width: 430px;
   flex-grow: 1;
+  align-items: flex-start;
 }
 
 .filter_container {
   width: 250px;
-  min-width: 150px;
-  max-width: 250px;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  margin: auto;
-  margin-top: 30px;
+  /*min-width: 150px;*/
+  /*max-width: 250px;*/
+  padding: 3.2%;
+  /*padding-top: 20px;*/
+  /*padding-bottom: 20px;*/
+  /*margin: auto;*/
+  /*margin-top: 30px;*/
+  flex-grow: 1;
+}
+
+.img-wrapper {
+  margin-top: 2%;
+  /*flex-grow: 1;*/
+
 }
 
 .img-container {
-  width: 360px;
-  padding: 3%;
-  margin-top: 2%;
-  margin-left: 5%;
-  margin-right: 5%;
-  background-color: white;
-  align-items: center;
-  border-style: groove;
+  width: 420px;
   position: relative;
 }
 
@@ -39,11 +43,11 @@ canvas {
 }
 
 #gallery {
-  width: 400px;
-  min-width: 460px;
-  min-height: 280px;
-  margin: auto;
+  padding: 3.2%;
+  /*margin: auto;*/
   flex-grow: 1;
+  display: flex;
+  flex-flow: column;
 }
 
 

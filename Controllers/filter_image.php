@@ -22,8 +22,10 @@ function applyFilter($imgpath, $id_filter = 'filter1') {
         $filter = imagecreatefrompng("../config/filters/Tree.png");
         break;
     }
-    $output_width = imagesx($output);
-    $output_height = imagesy($output);
+    // $output_width = imagesx($output);
+    // $output_height = imagesy($output);
+    $output_width = 420;
+    $output_height = 315;
     $filter_width = imagesx($filter);
     $filter_height = imagesy($filter);
     $filter_newwidth = $output_width/3;
