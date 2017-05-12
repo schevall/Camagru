@@ -44,9 +44,9 @@ function Display_comment(comment, id, Form, login) {
     let list = img_cont.querySelector('.comm_list');
     if (list == null) {
       list = document.createElement('ul');
+      list.setAttribute('class', 'comm_list');
       img_cont.appendChild(list);
     }
-    console.log(list);
     let newcom = document.createElement('li');
     let content = login + " : " + comment;
     newcom.innerHTML = content;

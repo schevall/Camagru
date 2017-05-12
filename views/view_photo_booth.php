@@ -16,7 +16,7 @@ session_start();
        <option value="filter4">Wave</option>
        <option value="filter5">Forest</option>
      </select>
-      <br/><label>Télécharger une photo (en png):</label><br/>
+      <br/><label>Télécharger une photo (en png ou jpeg):</label><br/>
       <input type="file" id="file_Upload"><br/>
       <button id="upload_button">Upload a picture</button>
         <br/><? echo $_SESSION['error']; $_SESSION['error'] = ''?>
