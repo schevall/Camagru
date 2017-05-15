@@ -214,6 +214,11 @@ function handleImage(event){
           alert ('Mauvais type de fichier : ' + filetype);
           return ;
         }
+        let size = file_Upload.files[0].size;
+        if (size > 5242880) {
+          alert ('Fichier max de 5mo, le votre fait : ' + (Math.round(size / (1024 * 1024))) + " Mo.");
+          return ;
+        }
         const img = new Image();
         img.onload = function(){
           init = 1;
