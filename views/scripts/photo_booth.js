@@ -76,8 +76,9 @@ function DeletePhoto(event){
 
   const Container = event.currentTarget.parentNode;
   const Wrapper = Container.parentNode;
-  const currentPhoto = Wrapper.firstElementChild;
-  const id = currentPhoto.getAttribute("id");
+  const InnerContainer = Wrapper.querySelector('.img-container');
+  const img = InnerContainer.firstChild;
+  const id = img.getAttribute("id");
 
   gallery.removeChild(Wrapper);
   Delete_ajax(id);
@@ -180,7 +181,7 @@ function Delete_ajax(id) {
   const params = "action=delete&id=" + id;
   httpRequest.onreadystatechange = function() {
     if (this.readyState == 4 && this.status == 200) {
-      console.log("Deleted ! Response :\n" + httpRequest.responseText + "\n");
+      console.log(httpRequest.responseText + "\n");
     }
   };
   httpRequest.send(params);

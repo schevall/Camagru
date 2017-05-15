@@ -50,7 +50,7 @@ if ($_POST['action'] == 'delete') {
   $Photo = new Photo();
   $user_info = $Photo->getUserinfobyLogin($login);
   $Photo->DeletePhoto($user_info['id_user'], $id);
-	echo '{photo supprimée}';
+	echo 'photo supprimée';
 	unlink($imgPath);
 }
 
