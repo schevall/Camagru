@@ -50,7 +50,8 @@ function applyFilter($imgpath, $id_filter = 'filter1') {
     }
     $newfilter = imagecreatetruecolor($filter_newwidth, $filter_newheight);
     imagecolortransparent($newfilter, null);
-    imagecopyresized($newfilter, $filter, 0, 0, 0, 0, $filter_newwidth, $filter_newheight, $filter_width, $filter_height);
+    imagecopyresampled($newfilter, $filter, 0, 0, 0, 0, $filter_newwidth, $filter_newheight, $filter_width, $filter_height);
+    // imagecopyresized($newfilter, $filter, 0, 0, 0, 0, $filter_newwidth, $filter_newheight, $filter_width, $filter_height);
     imagecopymerge ($output, $newfilter, $filter_xpos, $filter_ypos, 0, 0, $filter_newwidth, $filter_newheight, 100);
     imagepng($output, $imgpath);
 }
